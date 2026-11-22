@@ -22,15 +22,30 @@ describe('Authentication Endpoints', () => {
         .send({
           name: 'Ezzat Sobhi',
           email: 'ezzat@example.com',
-          password: 'Password123!',
-          role: 'user'
+          password: 'Password123!'
         });
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe('success');
       expect(res.body.data.token).toBeDefined();
       expect(res.body.data.user.email).toBe('ezzat@example.com');
+      expect(res.body.data.user.role).toBe('user');
       expect(res.body.data.user.password).toBeUndefined();
+    });
+
+    it('should reject registration attempts that include a role field (prevent privilege escalation)', async () => {
+      const res = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Hacker',
+          email: 'hacker@example.com',
+          password: 'Password123!',
+          role: 'admin'
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe('fail');
+      expect(JSON.stringify(res.body.data.errors)).toContain('Role cannot be specified');
     });
 
     it('should reject registration with already registered email', async () => {

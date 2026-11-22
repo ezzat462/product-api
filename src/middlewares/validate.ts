@@ -115,9 +115,9 @@ export const validateRegister = [
     .isLength({ min: 6 })
     .withMessage('Password must have at least 6 characters'),
   body('role')
-    .optional()
-    .isIn(['user', 'admin'])
-    .withMessage('Role must be either "user" or "admin"'),
+    .not()
+    .exists()
+    .withMessage('Role cannot be specified during registration. All accounts default to standard user.'),
   handleValidationErrors
 ];
 

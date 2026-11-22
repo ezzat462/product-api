@@ -20,7 +20,7 @@ const signToken = (user: IUser): string => {
 };
 
 export const register = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -31,7 +31,7 @@ export const register = catchAsync(async (req: Request, res: Response, next: Nex
     name,
     email,
     password,
-    role: role || 'user'
+    role: 'user'
   });
 
   const token = signToken(user);

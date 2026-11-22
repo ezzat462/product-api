@@ -2,6 +2,9 @@ import request from 'supertest';
 import app from '../src/app';
 import { connectTestDB, clearTestDB, closeTestDB } from './setup';
 
+import { User } from '../src/models/userModel';
+import jwt from 'jsonwebtoken';
+
 let userToken: string;
 let adminToken: string;
 
@@ -23,8 +26,7 @@ const setupUsers = async () => {
     .send({
       name: 'Regular User',
       email: 'user@example.com',
-      password: 'Password123!',
-      role: 'user'
+      password: 'Password123!'
     });
   userToken = userRes.body.data.token;
 
@@ -33,10 +35,18 @@ const setupUsers = async () => {
     .send({
       name: 'Admin User',
       email: 'admin@example.com',
-      password: 'Password123!',
-      role: 'admin'
+      password: 'Password123!'
     });
-  adminToken = adminRes.body.data.token;
+
+  await User.updateOne({ email: 'admin@example.com' }, { role: 'admin' });
+  adminToken = jwt.sign(
+    {
+      id: adminRes.body.data.user.id,
+      email: 'admin@example.com',
+      role: 'admin'
+    },
+    process.env.JWT_SECRET || 'default_jwt_secret_change_in_production'
+  );
 };
 
 describe('Product Endpoints', () => {

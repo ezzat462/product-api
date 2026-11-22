@@ -219,8 +219,7 @@ Once the server is running, explore and test the interactive Swagger / OpenAPI 3
 {
   "name": "Ezzat Sobhi",
   "email": "ezzat@example.com",
-  "password": "Password123!",
-  "role": "admin"
+  "password": "Password123!"
 }
 ```
 
@@ -233,7 +232,7 @@ Once the server is running, explore and test the interactive Swagger / OpenAPI 3
       "id": "6741b2f4a5c9d23e8e111111",
       "name": "Ezzat Sobhi",
       "email": "ezzat@example.com",
-      "role": "admin",
+      "role": "user",
       "createdAt": "2026-11-23T01:30:00.000Z"
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."

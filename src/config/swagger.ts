@@ -75,8 +75,7 @@ export const swaggerSpec = {
         properties: {
           name: { type: 'string', example: 'Ezzat Sobhi' },
           email: { type: 'string', format: 'email', example: 'ezzat@example.com' },
-          password: { type: 'string', minLength: 6, example: 'secret123' },
-          role: { type: 'string', enum: ['user', 'admin'], example: 'user' }
+          password: { type: 'string', minLength: 6, example: 'secret123' }
         }
       },
       LoginInput: {
