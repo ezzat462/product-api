@@ -1,0 +1,12 @@
+const express = require('express');
+const { param, validationResult } = require('express-validator');
+const router = express.Router();
+const { getAllProducts, getProductById,createProduct,updateProduct,deleteProduct } = require('../controllers/productController');
+const validateProductID  = require('../middlewares/validateProduct');
+router.get('/', getAllProducts);
+router.get('/:id', validateProductID, getProductById);
+router.post('/', createProduct);
+router.put('/:id', validateProductID, updateProduct);
+router.patch('/:id', validateProductID, updateProduct);
+router.delete('/:id', validateProductID, deleteProduct);
+module.exports = router;
