@@ -1,39 +1,32 @@
-# 🛒 Product Management RESTful API
+# Product Management RESTful API
 
-[![Node.js](https://img.shields.io/badge/Node.js-v24+-green.svg)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8+-blue.svg)](https://www.typescriptlang.org/)
-[![Express](https://img.shields.io/badge/Express-5.x-lightgrey.svg)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-brightgreen.svg)](https://mongoosejs.com/)
-[![Tests](https://img.shields.io/badge/Tests-22%20Passed-success.svg)](https://jestjs.io/)
-[![Swagger](https://img.shields.io/badge/Docs-Swagger%20OpenAPI%203.0-orange.svg)](#interactive-api-documentation)
+A clean, structured RESTful API for Product and User management built with **Node.js**, **Express.js**, and **TypeScript**, backed by **MongoDB** with **Mongoose**.
 
-A professional, enterprise-grade RESTful API for Product and User management built with **Node.js**, **Express.js**, and **TypeScript**, backed by **MongoDB** with **Mongoose**. 
-
-Engineered with production-ready patterns including strict typing, JWT authentication, Role-Based Access Control (RBAC), robust request validation, standardized JSend response contracts, centralized error handling, and a comprehensive automated test suite.
+Engineered following modern backend best practices, including strict TypeScript typing, JWT authentication, Role-Based Access Control (RBAC), robust input validation, standardized JSend response formatting, centralized error handling, and automated integration tests.
 
 ---
 
-## ⚡ Key Highlights & Architecture
+## Architecture & Key Features
 
-* **Strict TypeScript Architecture:** End-to-end type safety across controllers, models, middlewares, and route handlers.
-* **JWT Authentication & Password Security:** Secure registration and login using salted `bcryptjs` password hashing and signed JSON Web Tokens.
-* **Role-Based Access Control (RBAC):** Granular authorization (`user` vs `admin`) protecting sensitive actions (e.g. only administrators can delete products).
-* **Advanced Query Capabilities:**
-  * **Pagination:** Offset/limit pagination with metadata (`total`, `page`, `limit`, `totalPages`, `hasNextPage`, `hasPrevPage`).
-  * **Filtering:** Price range filtering (`minPrice`, `maxPrice`) and category filtering (`category`).
-  * **Search:** Case-insensitive product name text search (`search`).
-  * **Sorting:** Dynamic multi-field sorting (`sort=-createdAt`, `sort=price`).
-* **Clean Code & Design Patterns:**
-  * **MVC Architecture:** Strict separation between routing, business logic, data models, and utilities.
-  * **Async Handler Pattern:** `catchAsync` wrapper eliminating redundant `try-catch` boilerplate.
-  * **Centralized Error Handling:** Global error handler managing operational `AppError`, Mongoose `CastError`, duplicate key violations (`11000`), and JWT errors.
-  * **JSend Standard Response Envelope:** Unified JSON responses (`success`, `fail`, `error`).
-* **Automated Testing Suite:** 22 automated integration and unit tests using **Jest**, **Supertest**, and **mongodb-memory-server**.
-* **Interactive API Documentation:** Live Swagger / OpenAPI 3.0 specification available at `/api-docs`.
+- **Strict TypeScript Architecture:** End-to-end type safety across controllers, models, middlewares, and route handlers.
+- **JWT Authentication & Password Security:** Secure registration and login using salted `bcryptjs` password hashing and signed JSON Web Tokens. All newly registered accounts strictly receive the standard `user` role to prevent privilege escalation.
+- **Role-Based Access Control (RBAC):** Granular authorization (`user` vs `admin`) protecting sensitive actions (e.g., only administrators can delete products).
+- **Advanced Query Capabilities:**
+  - **Pagination:** Offset/limit pagination with metadata (`total`, `page`, `limit`, `totalPages`, `hasNextPage`, `hasPrevPage`).
+  - **Filtering:** Price range filtering (`minPrice`, `maxPrice`) and category filtering (`category`).
+  - **Search:** Case-insensitive product name text search (`search`).
+  - **Sorting:** Dynamic multi-field sorting (`sort=-createdAt`, `sort=price`).
+- **Clean Code & Design Patterns:**
+  - **MVC Architecture:** Strict separation between routing, business logic, data models, and utilities.
+  - **Async Handler Pattern:** `catchAsync` wrapper eliminating redundant `try-catch` boilerplate.
+  - **Centralized Error Handling:** Global error handler managing operational `AppError`, Mongoose `CastError`, duplicate key violations (`11000`), and JWT errors.
+  - **JSend Standard Response Envelope:** Unified JSON responses (`success`, `fail`, `error`).
+- **Automated Testing Suite:** 23 automated integration and unit tests using **Jest**, **Supertest**, and **mongodb-memory-server**.
+- **Interactive API Documentation:** Live Swagger / OpenAPI 3.0 specification available at `/api-docs`.
 
 ---
 
-## 📁 Project Directory Structure
+## Project Structure
 
 ```text
 product-api/
@@ -79,11 +72,11 @@ product-api/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-* [Node.js](https://nodejs.org/) (v18.x, v20.x, or v22.x+ recommended)
-* [MongoDB](https://www.mongodb.com/) running locally or a [MongoDB Atlas](https://www.mongodb.com/atlas) connection URI
+- Node.js (v20.19.0 or higher; v20.x, v22.x, or v24.x)
+- MongoDB running locally or a MongoDB Atlas connection URI
 
 ### 1. Installation
 Clone the repository and install dependencies:
@@ -106,7 +99,7 @@ NODE_ENV=development
 CORS_ORIGIN=*
 MONGODB_URL=mongodb://localhost:27017
 DB_NAME=store
-JWT_SECRET=super_secret_jwt_key_must_be_long_and_secure_12345
+JWT_SECRET=your_long_random_secret_here
 JWT_EXPIRES_IN=7d
 ```
 
@@ -125,9 +118,9 @@ npm start
 
 ---
 
-## 🧪 Automated Testing
+## Automated Testing
 
-The project includes 22 automated integration tests running against an isolated, in-memory MongoDB database (`mongodb-memory-server`).
+The project includes 23 automated integration and unit tests running against an isolated, in-memory MongoDB database (`mongodb-memory-server`).
 
 Execute the test suite:
 ```bash
@@ -139,66 +132,67 @@ npm test
 PASS tests/product.test.ts
   Product Endpoints
     POST /api/products
-      ✓ should create a new product when user is authenticated
-      ✓ should fail with 401 when no token is provided
-      ✓ should fail with 400 when validation rules fail (missing price)
+      - should create a new product when user is authenticated
+      - should fail with 401 when no token is provided
+      - should fail with 400 when validation rules fail (missing price)
     GET /api/products (Pagination, Filtering, Sorting)
-      ✓ should retrieve all products with pagination metadata
-      ✓ should filter products by category
-      ✓ should filter products by price range
-      ✓ should search products by name
+      - should retrieve all products with pagination metadata
+      - should filter products by category
+      - should filter products by price range
+      - should search products by name
     GET /api/products/:id
-      ✓ should retrieve a single product by valid ID
-      ✓ should return 400 for an invalid Mongo ObjectId (bug fix verification)
-      ✓ should return 404 for a valid Mongo ObjectId that does not exist
+      - should retrieve a single product by valid ID
+      - should return 400 for an invalid Mongo ObjectId (bug fix verification)
+      - should return 404 for a valid Mongo ObjectId that does not exist
     PATCH /api/products/:id
-      ✓ should update product fields when authenticated
+      - should update product fields when authenticated
     DELETE /api/products/:id (RBAC Authorization)
-      ✓ should forbid regular users from deleting a product with 403 Forbidden
-      ✓ should allow admin users to delete a product successfully (200)
+      - should forbid regular users from deleting a product with 403 Forbidden
+      - should allow admin users to delete a product successfully (200)
 
 PASS tests/auth.test.ts
   Authentication Endpoints
     POST /api/auth/register
-      ✓ should register a new user successfully and return JWT token
-      ✓ should reject registration with already registered email
-      ✓ should fail with 400 when validation fails (short password)
+      - should register a new user successfully and return JWT token
+      - should reject registration attempts that include a role field (prevent privilege escalation)
+      - should reject registration with already registered email
+      - should fail with 400 when validation fails (short password)
     POST /api/auth/login
-      ✓ should login with valid credentials and return a token
-      ✓ should reject login with wrong password
+      - should login with valid credentials and return a token
+      - should reject login with wrong password
     GET /api/auth/me
-      ✓ should return profile for authenticated user
-      ✓ should return 401 Unauthorized if no token is provided
+      - should return profile for authenticated user
+      - should return 401 Unauthorized if no token is provided
 
 PASS tests/notFound.test.ts
   Global Error & 404 Handling
-    ✓ should return 404 for undefined routes in standard error format
-    ✓ should respond to /health check with 200 OK
+    - should return 404 for undefined routes in standard error format
+    - should respond to /health check with 200 OK
 
 Test Suites: 3 passed, 3 total
-Tests:       22 passed, 22 total
+Tests:       23 passed, 23 total
 ```
 
 ---
 
-## 📑 Interactive API Documentation
+## Interactive API Documentation
 
-Once the server is running, explore and test the interactive Swagger / OpenAPI 3.0 documentation:
-👉 **[http://localhost:5000/api-docs](http://localhost:5000/api-docs)**
+Once the server is running, the interactive Swagger / OpenAPI 3.0 documentation is accessible at:
+**http://localhost:5000/api-docs**
 
 ---
 
-## 📡 API Endpoints Reference
+## API Endpoints Reference
 
-### 🔐 Authentication (`/api/auth`)
+### Authentication (`/api/auth`)
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/register` | Public | Register a new user (`name`, `email`, `password`, `role`) |
+| `POST` | `/api/auth/register` | Public | Register a new user (`name`, `email`, `password`). Accounts strictly receive the `user` role. |
 | `POST` | `/api/auth/login` | Public | Authenticate user and receive JWT bearer token |
 | `GET` | `/api/auth/me` | Authenticated | Retrieve current user profile |
 
-### 📦 Products (`/api/products`)
+### Products (`/api/products`)
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
@@ -211,9 +205,12 @@ Once the server is running, explore and test the interactive Swagger / OpenAPI 3
 
 ---
 
-## 📋 Example Requests & Responses
+## Example Requests & Responses
 
 ### 1. User Registration (`POST /api/auth/register`)
+
+> **Note on Roles & Security:** Public registration strictly assigns the default `user` role. The `role` field is intentionally disallowed in registration requests to prevent privilege escalation. Users cannot grant themselves the `admin` role through public registration.
+
 **Request Body:**
 ```json
 {
@@ -278,8 +275,9 @@ Once the server is running, explore and test the interactive Swagger / OpenAPI 3
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Ezzat Sobhi**  
-*Computer Science Student (Class of 2027) | Aspiring Backend Developer*  
-* GitHub: [@ezzat462](https://github.com/ezzat462)
+Computer Science Student (Class of 2027) | Aspiring Backend Developer  
+- GitHub: [github.com/ezzat462](https://github.com/ezzat462)  
+- LinkedIn: [linkedin.com/in/ezzat-sobhi-b277372a4/](https://www.linkedin.com/in/ezzat-sobhi-b277372a4/)
